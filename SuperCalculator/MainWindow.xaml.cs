@@ -10,9 +10,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -31,6 +33,23 @@ namespace SuperCalculator
             this.InitializeComponent();
             tbParam1.Text = 12.34.ToString();
             tbParam2.Text = 56.78.ToString();
+
+            // A bit of extra fun (not related to threading): change theme with ctrl+T key combination
+            rootPanel.RequestedTheme = Application.Current.RequestedTheme == ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark;
+            var accelerator = new KeyboardAccelerator()
+              {
+                  Modifiers = VirtualKeyModifiers.Control,
+                  Key = VirtualKey.T,
+              };
+            accelerator.Invoked += (UIElement, args) =>
+            {
+                rootPanel.RequestedTheme = rootPanel.RequestedTheme == ElementTheme.Light
+                ? rootPanel.RequestedTheme = ElementTheme.Dark
+                : ElementTheme.Light;
+                args.Handled = true;
+            };
+            rootPanel.KeyboardAcceleratorPlacementMode = KeyboardAcceleratorPlacementMode.Hidden;
+            rootPanel.KeyboardAccelerators.Add(accelerator);
         }
 
         private void ShowResult(double[] parameters, double result)
@@ -67,5 +86,15 @@ namespace SuperCalculator
 
             await noWifiDialog.ShowAsync();
         }
+
+        //private void RootPanel_ProcessKeyboardAccelerators(UIElement , ProcessKeyboardAcceleratorEventArgs args)
+        //{
+        //    if (args.Key == Windows.System.VirtualKey.T && args.Modifiers == Windows.System.VirtualKeyModifiers.Control)
+        //    {
+        //        Console.WriteLine(  "a");
+        //    }
+        //}
+
+
     }
 }
