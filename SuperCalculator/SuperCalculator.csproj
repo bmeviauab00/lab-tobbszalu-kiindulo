@@ -10,6 +10,8 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
+	  <!--Added to enable execution just by double clicking the exe file-->
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
   </PropertyGroup>
 
   <ItemGroup>
