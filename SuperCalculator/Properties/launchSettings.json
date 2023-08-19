@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SuperCalculator (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SuperCalculator (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

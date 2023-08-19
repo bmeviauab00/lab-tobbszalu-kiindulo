@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="SuperCalculator.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SuperCalculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid x:Name="rootPanel" Background="{ThemeResource CustomBackground}">
+        <Grid.Resources>
+            <!--<Style TargetType="ListBoxItem">
+                <Setter Property="MinHeight" Value="20" />
+                <Setter Property="Height" Value="20" />
+            </Style>-->
+            <!--<ResourceDictionary Source="ms-appx:///Microsoft.UI.Xaml/DensityStyles/Compact.xaml" />-->
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0">
+            <TextBox x:Name="tbParam1" Header="Parameter 1" Margin="5, 5, 5, 5"></TextBox>
+            <TextBox x:Name="tbParam2" Header="Parameter 2" Margin="5, 5, 5, 5"></TextBox>
+            <Button HorizontalAlignment="Stretch" Margin="5, 5, 5, 5" Style="{ThemeResource AccentButtonStyle}" Click="btnCalculateResult_Click">
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="Calculator"/>
+                    <TextBlock Text="Calculate Result" Margin="5 0 0 0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <Grid Grid.Row="1" Margin="5, 5, 5, 5" RowDefinitions="Auto,*">
+            <TextBlock Grid.Row="0" Text="Result" Margin="{ThemeResource TextBoxTopHeaderMargin}"/>
+            <ListBox x:Name="lbResult" Grid.Row="1"
+                 ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="12,2,12,2"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
+        </Grid>
+
+        <!--<ListView Grid.Row="1" Margin="5, 5, 5, 5" Header="Result"
+                 ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollMode="Enabled" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="MinHeight" Value="30" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListViewItem>apple</ListViewItem>
+            <ListViewItem>grape grape grape grape grape grape grape</ListViewItem>
+            <ListViewItem>grape grape grape grape grape grape grape</ListViewItem>
+        </ListView>-->
+    </Grid>
+</Window>

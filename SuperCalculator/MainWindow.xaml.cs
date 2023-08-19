@@ -1,0 +1,71 @@
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+using SuperCalculator.Data;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+
+// To learn more about WinUI, the WinUI project structure,
+// and more about our project templates, see: http://aka.ms/winui-project-info.
+
+namespace SuperCalculator
+{
+    /// <summary>
+    /// An empty window that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class MainWindow : Window
+    {
+        private readonly DataFifo _fifo = new DataFifo();
+
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            tbParam1.Text = 12.34.ToString();
+            tbParam2.Text = 56.78.ToString();
+        }
+
+        private void ShowResult(double[] parameters, double result)
+        {
+            var item = new ListBoxItem()
+            {
+                Content = $"{parameters[0]} #  {parameters[1]} = {result}"
+            };
+            lbResult.Items.Add(item);
+            lbResult.ScrollIntoView(item);
+        }
+
+        private void btnCalculateResult_Click(object sender, RoutedEventArgs e)
+        {
+            if (double.TryParse(tbParam1.Text, out var p1) && double.TryParse(tbParam2.Text, out var p2))
+            {
+                var parameters = new double[] { p1, p2 };
+
+                // TODO Call Algorithms.dll
+            }
+            else
+                DisplayInvalidElementDialog();
+        }
+
+        async void DisplayInvalidElementDialog()
+        {
+            ContentDialog noWifiDialog = new ContentDialog()
+            {
+                XamlRoot = rootPanel.XamlRoot,
+                Title = "Super Calculator",
+                Content = "Invalid parameter!",
+                CloseButtonText = "Ok",
+            };
+
+            await noWifiDialog.ShowAsync();
+        }
+    }
+}
