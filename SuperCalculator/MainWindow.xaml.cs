@@ -34,13 +34,18 @@ namespace SuperCalculator
             tbParam1.Text = 12.34.ToString();
             tbParam2.Text = 56.78.ToString();
 
+            AddKeyboardAcceleratorToChangeTheme();
+        }
+
+        private void AddKeyboardAcceleratorToChangeTheme()
+        {
             // A bit of extra fun (not related to threading): change theme with ctrl+T key combination
             rootPanel.RequestedTheme = Application.Current.RequestedTheme == ApplicationTheme.Light ? ElementTheme.Light : ElementTheme.Dark;
             var accelerator = new KeyboardAccelerator()
-              {
-                  Modifiers = VirtualKeyModifiers.Control,
-                  Key = VirtualKey.T,
-              };
+            {
+                Modifiers = VirtualKeyModifiers.Control,
+                Key = VirtualKey.T,
+            };
             accelerator.Invoked += (UIElement, args) =>
             {
                 rootPanel.RequestedTheme = rootPanel.RequestedTheme == ElementTheme.Light
@@ -86,15 +91,6 @@ namespace SuperCalculator
 
             await noWifiDialog.ShowAsync();
         }
-
-        //private void RootPanel_ProcessKeyboardAccelerators(UIElement , ProcessKeyboardAcceleratorEventArgs args)
-        //{
-        //    if (args.Key == Windows.System.VirtualKey.T && args.Modifiers == Windows.System.VirtualKeyModifiers.Control)
-        //    {
-        //        Console.WriteLine(  "a");
-        //    }
-        //}
-
 
     }
 }
