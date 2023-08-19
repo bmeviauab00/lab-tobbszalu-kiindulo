@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -27,6 +28,7 @@ namespace SuperCalculator
     public sealed partial class MainWindow : Window
     {
         private readonly DataFifo _fifo = new DataFifo();
+        private bool _isClosed = false;
 
         public MainWindow()
         {
@@ -35,6 +37,18 @@ namespace SuperCalculator
             param2TextBox.Text = 56.78.ToString();
 
             AddKeyboardAcceleratorToChangeTheme();
+
+            new Thread(WorkerThread) { Name = "Szal1" }.Start();
+            new Thread(WorkerThread) { Name = "Szal2" }.Start();
+            new Thread(WorkerThread) { Name = "Szal3" }.Start();
+
+            Closed += MainWindow_Closed;
+        }
+
+        private void MainWindow_Closed(object sender, WindowEventArgs args)
+        {
+            _isClosed = true;
+            _fifo.Release();
         }
 
         private void AddKeyboardAcceleratorToChangeTheme()
@@ -59,12 +73,27 @@ namespace SuperCalculator
 
         private void ShowResult(double[] parameters, double result)
         {
-            var item = new ListBoxItem()
+            if (_isClosed)
+                return;
+
+            // Closing the window the DispatcherQueue property may return null, so we have to perform a null check
+            if (this.DispatcherQueue == null)
+                return;
+
+            if (this.DispatcherQueue.HasThreadAccess)
             {
-                Content = $"{parameters[0]} #  {parameters[1]} = {result}"
-            };
-            resultListBox.Items.Add(item);
-            resultListBox.ScrollIntoView(item);
+                var item = new ListBoxItem()
+                {
+                    Content = $"{parameters[0]} #  {parameters[1]} = {result}"
+                };
+                resultListBox.Items.Add(item);
+                resultListBox.ScrollIntoView(item);
+            }
+            else
+            {
+                bool isQueued = this.DispatcherQueue.TryEnqueue(
+                    () => ShowResult(parameters, result));
+            }
         }
 
         private void CalculateResultButton_Click(object sender, RoutedEventArgs e)
@@ -73,7 +102,7 @@ namespace SuperCalculator
             {
                 var parameters = new double[] { p1, p2 };
 
-                // TODO Call Algorithms.dll
+                _fifo.Put(parameters);
             }
             else
                 DisplayInvalidElementDialog();
@@ -91,6 +120,29 @@ namespace SuperCalculator
 
             await invalidParamDialog.ShowAsync();
         }
+
+        private void CalculatorThread(object arg)
+        {
+            var parameters = (double[])arg;
+            var result = Algorithms.SuperAlgorithm.Calculate(parameters);
+            ShowResult(parameters, result);
+        }
+
+        private void WorkerThread()
+        {
+            while (!_isClosed)
+            {
+                if (_fifo.TryGet(out var data))
+                {
+                    double result = Algorithms.SuperAlgorithm.Calculate(data);
+                    ShowResult(data, result);
+                }
+
+                //Thread.Sleep(500);
+            }
+        }
+
+
 
     }
 }
