@@ -81,7 +81,7 @@ namespace SuperCalculator
 
         async void DisplayInvalidElementDialog()
         {
-            ContentDialog noWifiDialog = new ContentDialog()
+            ContentDialog invalidParamDialog = new ContentDialog()
             {
                 XamlRoot = rootPanel.XamlRoot,
                 Title = "Super Calculator",
@@ -89,7 +89,7 @@ namespace SuperCalculator
                 CloseButtonText = "Ok",
             };
 
-            await noWifiDialog.ShowAsync();
+            await invalidParamDialog.ShowAsync();
         }
 
     }
