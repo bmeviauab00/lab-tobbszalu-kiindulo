@@ -51,7 +51,7 @@ namespace SuperCalculator
             IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
-            appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 480, Height = 800 });
+            appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 300, Height = 500 });
 
             m_window.Activate();
         }
