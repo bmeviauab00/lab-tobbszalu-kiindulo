@@ -31,8 +31,8 @@ namespace SuperCalculator
         public MainWindow()
         {
             this.InitializeComponent();
-            tbParam1.Text = 12.34.ToString();
-            tbParam2.Text = 56.78.ToString();
+            param1TextBox.Text = 12.34.ToString();
+            param2TextBox.Text = 56.78.ToString();
 
             AddKeyboardAcceleratorToChangeTheme();
         }
@@ -63,13 +63,13 @@ namespace SuperCalculator
             {
                 Content = $"{parameters[0]} #  {parameters[1]} = {result}"
             };
-            lbResult.Items.Add(item);
-            lbResult.ScrollIntoView(item);
+            resultListBox.Items.Add(item);
+            resultListBox.ScrollIntoView(item);
         }
 
-        private void btnCalculateResult_Click(object sender, RoutedEventArgs e)
+        private void CalculateResultButton_Click(object sender, RoutedEventArgs e)
         {
-            if (double.TryParse(tbParam1.Text, out var p1) && double.TryParse(tbParam2.Text, out var p2))
+            if (double.TryParse(param1TextBox.Text, out var p1) && double.TryParse(param2TextBox.Text, out var p2))
             {
                 var parameters = new double[] { p1, p2 };
 
