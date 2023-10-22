@@ -15,7 +15,6 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.ViewManagement;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -51,7 +50,9 @@ namespace SuperCalculator
             IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(m_window);
             var windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             var appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
-            appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = 300, Height = 500 });
+            // Get Dpi, so that we can adjust window size according to the current DPI settings
+            uint iDpi = Windows.Win32.PInvoke.GetDpiForWindow((Windows.Win32.Foundation.HWND)hWnd);
+            appWindow.Resize(new Windows.Graphics.SizeInt32 { Width = (int)(300 * iDpi / 96.0), Height = (int)(500 * iDpi / 96.0) });
 
             m_window.Activate();
         }
