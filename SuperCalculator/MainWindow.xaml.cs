@@ -63,8 +63,8 @@ namespace SuperCalculator
             accelerator.Invoked += (UIElement, args) =>
             {
                 rootPanel.RequestedTheme = rootPanel.RequestedTheme == ElementTheme.Light
-                ? rootPanel.RequestedTheme = ElementTheme.Dark
-                : ElementTheme.Light;
+                    ? ElementTheme.Dark
+                    : ElementTheme.Light;
                 args.Handled = true;
             };
             rootPanel.KeyboardAcceleratorPlacementMode = KeyboardAcceleratorPlacementMode.Hidden;
